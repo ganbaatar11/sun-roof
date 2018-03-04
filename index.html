@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Drawing tools</title>
-  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-  <meta charset="utf-8">
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="css/uikit.min.css" />
-  <link rel="stylesheet" href="css/index.css" />
+    <title>Drawing tools</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/uikit.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-    <div uk-grid class="uk-card uk-margin-medium-top">
+    <div uk-grid class="uk-card">  
         <div class="uk-width-expand@m">
+            <input id="pac-input" class="controls" type="text" placeholder="Search Box">
             <div id="map"></div>
         </div>
     </div>
-  
-  <script src="js/uikit.min.js"></script>
-  <script src="js/uikit-icons.min.js"></script>
-  <script src="js/my-map.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6ypAvuY6xD0K9nR-o0f0FMcnvtT_wU4&libraries=drawing&callback=initMap"
-  async defer></script>
+    
+    <script src="js/uikit.min.js"></script>
+    <script src="js/uikit-icons.min.js"></script>
+    <script src="js/my-map.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAa6ypAvuY6xD0K9nR-o0f0FMcnvtT_wU4&libraries=drawing,places&sensor=false&callback=initialize"
+    async defer></script>
 </body>
 </html>
