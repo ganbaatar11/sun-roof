@@ -8,12 +8,64 @@ function initialize() {
 }
 
 function initAutocomplete() {
+  /** E = A * r * H * PR
+  E => Energy (kWh) 
+  A => Total solar panel Area (m2) 
+  r => solar panel yield or efficiency(%): 16% = 0.16
+  H => Between 200 kWh/m2.y (Norway) and 2600 kWh/m2.y: 2000
+  PR => Performance Ratio: range between 0.5 and 0.9, default value = 0.75
+  */
+  
+  var calculate_energy = function (a){
+    var r = 0.16
+    var H = 2000; 
+    var pr = 0.75
+    var to_kw = 0.001;
+    return Number.parseFloat(a * r * H * pr * to_kw).toFixed(2);
+  };
+  
+  var calculate_area = function (event){
+    return Number.parseFloat(google.maps.geometry.spherical.computeArea(event.getPath())).toFixed(2);
+  }
+  
+  var costs = [[0, 5, 5.10], [5,10, 5], [10,25, 4.85], [25, 100, 4.45], [100, Infinity, 3.70]];
+
+  var calculate_cost = function (energy, costs){
+    for(var _c of costs){
+      if(energy >= _c[0] && energy < _c[1]){
+        return Number.parseFloat(energy * _c[2]).toFixed(2);
+      }
+    };
+    return Number.parseFloat(0).toFixed(2);
+  }
+  
+  var update_details = function(event){
+    set_shape(event);
+    var a = calculate_area(event.overlay);
+    var e = calculate_energy(a);
+    var c = calculate_cost(e, costs);
+    document.getElementById("area").innerText = a  + " m^2";
+    document.getElementById("energy").innerText = e + " kW";
+    document.getElementById("cost").innerText = "$ " + c;
+  }
+   
   var chicago = {lat: 41.8851557, lng: -87.6292102}
+   
   var map = new google.maps.Map(document.getElementById('map'), {
     center: chicago,
-    zoom: 15,
+    zoom: 17,
     mapTypeId: 'satellite'
   });
+
+  // current drawn shape
+  var selected_shape = null;
+
+  // clear previous shape when new shape is drawn completely
+  var set_shape = function(event){
+    if (selected_shape) selected_shape.overlay.setMap(null);
+    selected_shape = event;
+    selected_shape.overlay.setMap(map);
+  }
   
   // create drawing tools
   var drawingManager = new google.maps.drawing.DrawingManager({
@@ -24,27 +76,36 @@ function initAutocomplete() {
       drawingModes: ['polygon']
     },
     markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
-    circleOptions: {
+    polygonOptions: {
       fillColor: '#ffff00',
-      fillOpacity: 1,
+      // fillOpacity: 1,
       strokeWeight: 5,
-      clickable: false,
+      clickable: true,
       editable: true,
       zIndex: 1
     }
   });
-
+  
   // set map for drawing tools
   drawingManager.setMap(map);
-
+  
   // adding overlaycomplete event listener on map
+  // google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
+  //   update_details(event);
+  // });
+  
+  // calculatiting details each time when drawn shape is updated
   google.maps.event.addListener(drawingManager, 'overlaycomplete', function(event) {
-    if (event.type == 'polygon') {
-      var polygon = event.overlay.getPath();
-
-      // calculating area of shape in square meters.
-      var polygon_size = google.maps.geometry.spherical.computeArea(polygon);
-    }
+    if(event && event.type == 'polygon') {      
+      google.maps.event.addListener(event.overlay.getPath(), 'set_at', function() {
+        update_details(event);
+      });
+      
+      google.maps.event.addListener(event.overlay.getPath(), 'insert_at', function() {
+        update_details(event);
+      });
+      update_details(event);
+    };
   });
   
   // Create the search box and link it to the UI element.

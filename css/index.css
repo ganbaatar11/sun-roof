@@ -2,7 +2,7 @@
 * element that contains the map. */
 #map {
   height: 100%;
-  min-height: 800px;
+  min-height: 700px;
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
@@ -71,7 +71,7 @@ html, body {
   margin-left: 12px;
   padding: 0 11px 0 13px;
   text-overflow: ellipsis;
-  width: 400px;
+  width: 30%;
   line-height: 24px;
   height: 24px;
   top: 10px !important;
@@ -90,4 +90,8 @@ html, body {
 }
 #target {
   width: 345px;
+}
+
+.uk-section {
+  padding-top: 10px;
 }

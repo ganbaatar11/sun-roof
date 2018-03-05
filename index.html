@@ -9,10 +9,17 @@
     <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-    <div uk-grid class="uk-card">  
-        <div class="uk-width-expand@m">
-            <input id="pac-input" class="controls" type="text" placeholder="Search Box">
-            <div id="map"></div>
+    <div class="uk-section uk-section-default">
+        <div class="uk-container uk-align-center"> 
+            <h3 class="uk-heading-bullet">Draw on your roof to calculate solar panel cost</h3>
+            <div class="uk-margin-small-bottom"><span href="" class="uk-icon-link" uk-icon="info"></span> Area(m^2): <span id="area" class="uk-text-bold"></span></div>
+            <div class="uk-margin-small-bottom"><span href="" class="uk-icon-link" uk-icon="bolt"></span> Energy: <span id="energy" class="uk-text-bold"></span></div>
+            <div class="uk-margin-small-bottom"><span href="" class="uk-icon-link" uk-icon="tag"></span> Cost: <span id="cost" class="uk-text-bold"></span></div>
+            
+            <div class="uk-width-auto@m">
+                <input id="pac-input" class="controls" type="text" placeholder="Search Box">
+                <div id="map"></div>
+            </div>
         </div>
     </div>
     
